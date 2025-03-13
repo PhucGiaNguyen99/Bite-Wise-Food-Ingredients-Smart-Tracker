@@ -1,37 +1,40 @@
 ﻿# Ingredients-Scanner
 Ingredient Scanner
-Ingredient Scanner is an Android app that allows users to capture an image of food ingredient labels, extract the text using Google ML Kit's OCR technology, and save the extracted text to a .txt file for later use.
+Ingredient Scanner is an Android app that allows users to capture an image of food label using ML Kit OCR, extract the text using Google ML Kit's OCR technology, and save the extracted text to a .txt file for later use.
 
 This app is useful for health-conscious users, food researchers, and individuals with dietary restrictions who need to quickly check ingredient information without manually typing it.
 
 📷 Features
 ✅ Capture Image – Take a picture of food labels using the phone's camera.
 
-✅ Extract Text – Recognizes and extracts ingredient information from the image.
+✅ Scan barcodes on food products to retrieve detailed product information from the Open Food Facts API
 
 ✅ Save Text to File – Stores the extracted text in a .txt file in the app’s storage.
 
-✅ User-Friendly UI – Simple and minimal interface for easy usage.
+✅ Display key product details, including:
+  - Product Name
+  - Brand
+  - List of Ingredients
+  - Allergens (Milk, Soy, Gluten, etc.)
+  - Additives & Preservatives
+  - Calories & Basic Nutrition Info
 
-✅ Offline Functionality – Works without an internet connection.
+🛠️ Technical Stack & Tools
+-  Android Studio (Java)
+-  CameraX 📸 (For capturing images and scanning barcodes)
+-  ML Kit OCR 📝 (For extracting text from food labels)
+-  ML Kit Barcode Scanner 🔍 (For scanning product barcodes)
+-  Retrofit 🌐 (For fetching product data from Open Food Facts API)
+-  Open Food Facts API 📊 (For retrieving food product details)
 
-🛠️ Technical Tools & Technologies Used
-📌 Programming Languages & Frameworks
+🚀 Features Implemented (MVP Stage)
+✔️ Text recognition using ML Kit OCR to extract ingredients from images
+✔️ Barcode scanning to identify food products
+✔️ Integration with Open Food Facts API to fetch product details
+✔️ Display product information including ingredients, calories, and additives
 
-Java – Primary language for Android development.
-
-Android SDK – Used for building the Android app.
-
-📌 Libraries & APIs
-
-CameraX API – To capture images directly from the app.
-
-Google ML Kit (Text Recognition API) – Used for Optical Character Recognition (OCR) to extract text from images.
-
-📌 Android Components & Features
-
-Activity & Intent Handling – Manages the camera and text recognition workflows.
-
-Permissions API – Ensures the app requests camera and storage permissions dynamically.
-
-File Storage API – Saves and retrieves extracted text from .txt files in app storage.
+📌 Next Steps & Future Features
+🔹 Enhance UI with Material Design components
+🔹 Categorize ingredients into Main, Additives, and Allergens
+🔹 Add Health Score (A to E) to indicate food quality
+🔹 Improve scanning accuracy and filtering of valid ingredients
