@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -47,4 +46,6 @@ dependencies {
     implementation(libs.mlkit.barcode.scanning)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+    testImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.android)
 }
