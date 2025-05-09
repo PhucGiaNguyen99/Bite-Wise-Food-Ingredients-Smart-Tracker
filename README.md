@@ -2,6 +2,8 @@
 Phuc Nguyen's Ingredient Scanner
 
 **05/09 - Let's redirect the goals of this beautiful app - BiteWise**
+
+
 **General idea of the app:** 
 To help users track their food consumption and make informed health decisions by scanning barcodes and analyzing product data automatically.
 
