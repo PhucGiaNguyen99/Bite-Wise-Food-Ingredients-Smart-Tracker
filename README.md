@@ -1,118 +1,120 @@
-﻿By Phuc Nguyen
+﻿# BiteWise – Food Ingredient Scanner
+**By Phuc Nguyen**
 
 A smart Android app to help users make informed food choices by scanning product barcodes and extracting ingredient data.
 
-Overview
-BiteWise empowers users to track their food consumption and make healthier decisions by leveraging barcode scanning and ingredient analysis powered by the Open Food Facts API. The app extracts ingredient information, displays nutritional content, and highlights risky allergens using a customizable detection system.
+---
+
+## Overview
+
+**BiteWise** empowers users to track their food consumption and make healthier decisions by leveraging barcode scanning and ingredient analysis powered by the [Open Food Facts API](https://world.openfoodfacts.org/). The app extracts ingredient information, displays nutritional content, and highlights risky allergens using a customizable detection system.
 
 Although developed during a busy finals week and job search, this app reflects my passion for building real-world, purposeful projects.
 
-Why Scan Barcodes Instead of Just Reading Labels?
-Access rich data: Barcodes unlock detailed product information from Open Food Facts beyond what's printed on packaging.
+---
 
-Faster logging: Automatically record ingredients and nutrition with a single scan.
+## Why Scan Barcodes Instead of Just Reading Labels?
 
-Standardized information: Get reliable, centralized data for better analysis.
+- **Access rich data**: Barcodes unlock detailed product information from Open Food Facts beyond what's printed on packaging.
+- **Faster logging**: Automatically record ingredients and nutrition with a single scan.
+- **Standardized information**: Get reliable, centralized data for better analysis.
+- **Smarter health tracking**:
+    - Analyze trends over time
+    - Detect nutrient imbalances
+    - Personalize dietary goals
+    - Alert users to allergens or additives
 
-Smarter health tracking:
+---
 
-Analyze trends over time
+## Target Users
 
-Detect nutrient imbalances
+- Health-conscious individuals
+- People with dietary restrictions (e.g., gluten, nuts, dairy)
+- Nutritionists and researchers
+- Anyone seeking a simple, smart food logging tool
 
-Personalize dietary goals
+---
 
-Alert users to allergens or additives
+## Highlight Feature: Ingredient-Based Allergen Detection (Rule-Based NLP)
 
-Target Users
-Health-conscious individuals
-
-People with dietary restrictions (e.g., gluten, nuts, dairy)
-
-Nutritionists and researchers
-
-Anyone seeking a simple, smart food logging tool
-
-Highlight Feature: Ingredient-Based Allergen Detection (Rule-Based NLP)
 This feature matches ingredients against a user-defined allergy list.
 
-Extracted ingredient list is compared using keyword matching (e.g., “peanut”, “lactose”)
+- Extracted ingredient list is compared using keyword matching (e.g., “peanut”, “lactose”)
+- Alerts when allergens are detected
+- Customizable allergy settings
+- Powered by `spaCy` or `nltk` (lightweight NLP, no ML model needed—for now)
 
-Alerts when allergens are detected
+**Planned Enhancements**:
+- Synonym detection (e.g., "arachis oil" = peanut)
+- Fuzzy matching (e.g., "caseinate" = dairy)
+- Machine Learning integration for advanced detection and suggestions
 
-Customizable allergy settings
+---
 
-Powered by spaCy or nltk (lightweight NLP, no ML model needed—for now)
+## Core Features
 
-Planned Enhancements:
+- **Barcode scanning** – Fast, reliable scan with ML Kit Barcode API
+- **OCR ingredient extraction** – Read and parse label text using ML Kit Text Recognition
+- **Open Food Facts API integration** – Fetch real-time product info
+- **Allergy detection system** – Based on customizable preferences
+- **Personalized dashboard** *(planned)* – Visual insights with charts and progress toward health goals
+- **Smart notifications** *(planned)* – Get alerts when products exceed nutrition limits or contain allergens
+- **Scan history with Room DB**:
+    - Stores product name, ingredients, calories, and timestamp
+    - Displayed in a grouped-by-date layout using `ListView` and a custom adapter
 
-Synonym detection (e.g., "arachis oil" = peanut)
+---
 
-Fuzzy matching (e.g., "caseinate" = dairy)
+## Tech Stack
 
-Machine Learning integration for advanced detection and suggestions
+| Feature                  | Technology                   |
+|--------------------------|------------------------------|
+| Language                 | Java                         |
+| IDE                      | Android Studio               |
+| Image Capture & Barcode | CameraX, ML Kit              |
+| OCR                     | ML Kit Text Recognition      |
+| API Communication       | Retrofit                     |
+| Data Source             | Open Food Facts API          |
+| Local Storage           | Room Database                |
+| UI Design               | Material Design Components   |
 
-Core Features
-Barcode scanning – Fast, reliable scan with ML Kit Barcode API
+---
 
-OCR ingredient extraction – Read and parse label text using ML Kit Text Recognition
+## Recent Updates (as of 05/10)
 
-Open Food Facts API integration – Fetch real-time product info
+- Product info now displayed on a dedicated screen
+- UI overhaul with cleaner layout and better experience
+- Implemented local scan history with Room Database and custom adapter
+- Grouped product history view by date
 
-Allergy detection system – Based on customizable preferences
+---
 
-Personalized dashboard (planned) – Visual insights with charts and progress toward health goals
+## Features Implemented
 
-Smart notifications (planned) – Get alerts when products exceed nutrition limits or contain allergens
+- OCR ingredient extraction
+- Barcode scanning
+- Open Food Facts API integration
+- Product info display
+- Allergen detection (rule-based)
+- Scan history with timestamp and data grouping
 
-Scan history with Room DB –
+---
 
-Stores product name, ingredients, calories, and timestamp
+## Future Improvements
 
-Displayed in a grouped-by-date layout using ListView and a custom adapter
+- Interactive dashboard for nutrition analysis
+- Visual intake charts (daily/weekly/monthly)
+- Health goal recommendations and alerts
+- Machine Learning enhancements for NLP allergen detection
 
-Tech Stack
-Feature	Technology
-Language	Java
-IDE	Android Studio
-Image Capture & Barcode	CameraX, ML Kit
-OCR	ML Kit Text Recognition
-API Communication	Retrofit
-Data Source	Open Food Facts API
-Local Storage	Room Database
-UI Design	Material Design Components
+---
 
-Recent Updates (as of 05/10)
-Product info now displayed on a dedicated screen
+## Screenshots
 
-UI overhaul with cleaner layout and better experience
+*(Coming Soon)*
 
-Implemented local scan history with Room Database and custom adapter
+---
 
-Grouped product history view by date
+## Contribution
 
-Features Implemented
-OCR ingredient extraction
-
-Barcode scanning
-
-Open Food Facts API integration
-
-Product info display
-
-Allergen detection (rule-based)
-
-Scan history with timestamp and data grouping
-
-Future Improvements
-Interactive dashboard for nutrition analysis
-
-Visual intake charts (daily/weekly/monthly)
-
-Health goal recommendations and alerts
-
-Machine Learning enhancements for NLP allergen detection
-
-Screenshots (Coming Soon)
-Contribution
 Currently a personal project. Open to feedback and suggestions.
