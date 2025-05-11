@@ -1,5 +1,7 @@
 package com.example.ingredientscanner;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ProductResponse {
     public Product product;
 
@@ -11,6 +13,14 @@ public class ProductResponse {
     }
 
     public static class Nutriments {
-        public float energy_kcal;
+        // Add more field names for kcal retrieved from the API
+        @SerializedName("energy-kcal")
+        public Float energyKcal;
+
+        @SerializedName("energy-kcal_100g")
+        public Float energyKcal100g;
+
+        @SerializedName("energy-kcal_serving")
+        public Float energyKcalServing;
     }
 }
