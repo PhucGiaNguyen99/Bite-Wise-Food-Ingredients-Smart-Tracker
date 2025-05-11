@@ -45,6 +45,11 @@ Direction:
 5. Retrofit (For fetching product data from Open Food Facts API)
 6. Open Food Facts API (For retrieving food product details)
 
+05/10:
+1. Display the product info in a separate screen.
+2. Improved the entire UI of the app.
+3. Implement the history of scanned products.
+
 **Features Implemented**
 1. Text recognition using ML Kit OCR to extract ingredients from images
 2. Barcode scanning to identify food products
