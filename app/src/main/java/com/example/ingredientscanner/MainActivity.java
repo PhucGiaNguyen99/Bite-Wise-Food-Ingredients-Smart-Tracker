@@ -77,7 +77,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnScanBarcode.setOnClickListener(v -> startBarcodeScanner());
+        // btnScanBarcode.setOnClickListener(v -> startBarcodeScanner());
+        // Check permission before using camera
+        btnScanBarcode.setOnClickListener(v -> {
+            if (checkCameraPermission()) {
+                startBarcodeScanner();
+            } else {
+                requestCameraPermission();
+            }
+        });
 
         // Add the function for the Save button
         btnSave.setOnClickListener(v -> saveTextToFile());
@@ -213,17 +221,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayProductInfo(ProductResponse product) {
         StringBuilder info = new StringBuilder();
+        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
 
-        info.append("🍽 **Product Name:** ").append(product.product.product_name).append("\n");
-        info.append("🏭 **Brand:** ").append(product.product.brands).append("\n\n");
+        intent.putExtra("productName", product.product.product_name != null ? product.product.product_name : "Unknown");
+        intent.putExtra("brand", product.product.brands != null ? product.product.brands : "N/A");
+        intent.putExtra("ingredients", product.product.ingredients_text != null ? product.product.ingredients_text : "No ingredients listed");
+        intent.putExtra("calories", product.product.nutriments != null ? product.product.nutriments.energy_kcal + " kcal" : "Not available");
 
-        info.append("✅ **Ingredients:**\n").append(product.product.ingredients_text).append("\n\n");
-
-        if (product.product.nutriments != null) {
-            info.append("🔥 **Calories:** ").append(product.product.nutriments.energy_kcal).append(" kcal\n");
-        }
-
-        textView.setText(info.toString());
+        startActivity(intent);
     }
 
 }

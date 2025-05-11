@@ -10,6 +10,10 @@ constraintlayout = "2.2.1"
 mockitoVersion = "4.3.1"
 espresso = "3.5.1"
 extJunit = "1.1.5"
+kotlin = "1.9.22"
+room = "2.6.1"
+roomCommonJvm = "2.7.1"
+playServicesMlkitBarcodeScanning = "18.3.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -28,7 +32,15 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version = "2.9.0" }
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version = "2.9.0" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoVersion" }
 mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockitoVersion" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version = "2.6.1" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version = "2.6.1" }
+room-common = { group = "androidx.room", name = "room-common", version = "2.6.1" }
+room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
+play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+ksp = "com.google.devtools.ksp:1.9.20-1.0.14" # for KSP if using
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 

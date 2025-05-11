@@ -38,3 +38,10 @@ This app is useful for health-conscious users, food researchers, and individuals
 🔹 Categorize ingredients into Main, Additives, and Allergens
 🔹 Add Health Score (A to E) to indicate food quality
 🔹 Improve scanning accuracy and filtering of valid ingredients
+
+03:17 AM - 03/30: 
+Store the food details in Room database:
+- Create a data entity ScannedFood with id, productName, ingredients, calories, scanTime.
+- Create a DAO Interface ScannedFoodDao -> functions to interact with the table.
+- Create the Room Database AppDatabase -> a singleton Room Database with ScannedFood Entity, ScannedFoodDao interface, and getDatabase(context) to access it. 
+**allowMainThreadQueries() is okay for small apps or testing but consider switching to background threads later with LiveData or Coroutines for better performance.**
