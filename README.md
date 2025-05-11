@@ -48,7 +48,9 @@ Direction:
 05/10:
 1. Display the product info in a separate screen.
 2. Improved the entire UI of the app.
-3. Implement the history of scanned products.
+3. Implement the history of scanned products:
+- Implemented a local scan history feature using Room Database to store and organize product scan data.
+- Each scanned item—containing product name, ingredients, calorie information, and timestamp—is saved as a ScannedFood entity. The data is persistently stored and displayed in a grouped-by-date format on a dedicated History screen using a ListView with a custom adapter for visual distinction between dates and entries.
 
 **Features Implemented**
 1. Text recognition using ML Kit OCR to extract ingredients from images
