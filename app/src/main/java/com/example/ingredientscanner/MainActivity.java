@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 101;
 
-    private Button btnCapture, btnScanBarcode, btnSave;
+    private Button btnCapture, btnScanBarcode, btnSave, btnHistory;
     private ImageView imageView;
     private Bitmap capturedImage;
 
@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
         btnCapture = findViewById(R.id.btnCapture);
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
         btnSave = findViewById(R.id.btnSave);
+
+        btnHistory = findViewById(R.id.btnHistory);
+
         imageView = findViewById(R.id.imageView);
 
         btnCapture.setOnClickListener(v -> {
@@ -86,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnSave.setOnClickListener(v -> saveCapturedImageText());
+
+        btnHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
     }
 
     private boolean checkCameraPermission() {
@@ -177,6 +185,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         intent.putExtra("calories", calories);
+
+        ScannedFood food = new ScannedFood(
+                product.product.product_name,
+                product.product.ingredients_text,
+                product.product.nutriments != null ? product.product.nutriments.energyKcal : 0,
+                System.currentTimeMillis()
+        );
+
+        // This causes an exception silently because Room does not allow DB operations on the main thread by default
+        // AppDatabase.getInstance(this).scannedFoodDao().insert(food);
+
+        // Use a background thread
+        new Thread(() -> {
+            AppDatabase.getInstance(getApplicationContext()).scannedFoodDao().insert(food);
+        }).start();
 
         startActivity(intent);
     }

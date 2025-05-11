@@ -37,8 +37,8 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="8dp"
-                android:src="@drawable/bitwise_launcher_image" <!-- replace with your actual icon -->
-            />
+                android:src="@drawable/bitwise_launcher_image"/>
+
         </LinearLayout>
 
         <!-- Image Display -->
@@ -73,6 +73,14 @@
             android:layout_height="wrap_content"
             android:text="Save Text"
             android:layout_marginTop="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View History"
+            android:layout_marginTop="12dp" />
+
 
     </LinearLayout>
 </ScrollView>

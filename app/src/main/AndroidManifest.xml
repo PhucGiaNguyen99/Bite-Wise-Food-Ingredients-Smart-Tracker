@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ProductDetailActivity" />
-
+        <activity android:name=".HistoryActivity" />
     </application>
 
 </manifest>
