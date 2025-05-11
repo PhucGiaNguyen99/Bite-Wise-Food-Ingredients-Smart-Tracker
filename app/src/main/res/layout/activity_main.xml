@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:background="#FAFAFA"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnCapture"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Capture Image" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/btnScanBarcode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Scan Barcode"
-        android:layout_marginTop="16dp"/>
+        <!-- App Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BiteWise"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#1B5E20"
+            android:fontFamily="cursive"
+            android:layout_marginBottom="24dp" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="16dp"/>
+        <!-- Image Display -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_border"
+            android:layout_marginBottom="24dp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Extracted text will appear here"
-        android:padding="10dp"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"/>
+        <!-- Capture Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCapture"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Capture Image" />
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Text"
-        android:layout_marginTop="16dp"/>
+        <!-- Scan Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnScanBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan Barcode"
+            android:layout_marginTop="12dp" />
 
+        <!-- Save Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Text"
+            android:layout_marginTop="12dp" />
 
+    </LinearLayout>
+</ScrollView>
 
-</LinearLayout>
