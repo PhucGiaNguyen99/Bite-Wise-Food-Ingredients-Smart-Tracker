@@ -15,16 +15,31 @@
         android:gravity="center_horizontal">
 
         <!-- App Title -->
-        <TextView
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BiteWise"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#1B5E20"
-            android:fontFamily="cursive"
-            android:layout_marginBottom="24dp" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bite Wise"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#1B5E20"
+                android:fontFamily="cursive" />
+
+            <ImageView
+                android:id="@+id/titleIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/bitwise_launcher_image" <!-- replace with your actual icon -->
+            />
+        </LinearLayout>
 
         <!-- Image Display -->
         <ImageView
