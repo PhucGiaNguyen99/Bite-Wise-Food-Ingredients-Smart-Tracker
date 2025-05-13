@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 101;
 
-    private Button btnCapture, btnScanBarcode, btnSave, btnHistory;
+    private Button btnCapture, btnScanBarcode, btnSave, btnHistory, btnSetKcalLimit;
     private ImageView imageView;
     private Bitmap capturedImage;
 
@@ -93,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
         btnHistory.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);
+        });
+
+        btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
+
+        btnSetKcalLimit.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, KcalLimitActivity.class));
         });
     }
 
@@ -169,23 +175,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigateToProductDetail(ProductResponse product) {
-        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
-        intent.putExtra("productName", product.product.product_name != null ? product.product.product_name : "Unknown");
-        intent.putExtra("brand", product.product.brands != null ? product.product.brands : "N/A");
-        intent.putExtra("ingredients", product.product.ingredients_text != null ? product.product.ingredients_text : "No ingredients listed");
-
-        String calories = "Not available";
-        if (product.product.nutriments != null) {
-            if (product.product.nutriments.energyKcal != null) {
-                calories = product.product.nutriments.energyKcal + " kcal";
-            } else if (product.product.nutriments.energyKcal100g != null) {
-                calories = product.product.nutriments.energyKcal100g + " kcal per 100g";
-            } else if (product.product.nutriments.energyKcalServing != null) {
-                calories = product.product.nutriments.energyKcalServing + " kcal per serving";
-            }
-        }
-        intent.putExtra("calories", calories);
-
         ScannedFood food = new ScannedFood(
                 product.product.product_name,
                 product.product.ingredients_text,
@@ -193,15 +182,25 @@ public class MainActivity extends AppCompatActivity {
                 System.currentTimeMillis()
         );
 
-        // This causes an exception silently because Room does not allow DB operations on the main thread by default
-        // AppDatabase.getInstance(this).scannedFoodDao().insert(food);
+        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
+        intent.putExtra("productName", product.product.product_name != null ? product.product.product_name : "Unknown");
+        intent.putExtra("brand", product.product.brands != null ? product.product.brands : "N/A");
+        intent.putExtra("ingredients", product.product.ingredients_text != null ? product.product.ingredients_text : "No ingredients listed");
 
         // Use a background thread
         new Thread(() -> {
             AppDatabase.getInstance(getApplicationContext()).scannedFoodDao().insert(food);
         }).start();
 
-        startActivity(intent);
+        // Launch CheckKcalLimitActivity with all product info
+        Intent kcalIntent = new Intent(MainActivity.this, CheckKcalLimitActivity.class);
+        kcalIntent.putExtra("productName", product.product.product_name);
+        kcalIntent.putExtra("brand", product.product.brands);
+        kcalIntent.putExtra("ingredients", product.product.ingredients_text);
+        kcalIntent.putExtra("calories", product.product.nutriments != null ? product.product.nutriments.energyKcal : 0);
+        kcalIntent.putExtra("scannedCalories", product.product.nutriments != null ? product.product.nutriments.energyKcal : 0);
+
+        startActivity(kcalIntent);
     }
 
     private void saveCapturedImageText() {

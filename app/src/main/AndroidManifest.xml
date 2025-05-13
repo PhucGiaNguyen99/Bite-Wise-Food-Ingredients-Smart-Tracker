@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".ProductDetailActivity" />
         <activity android:name=".HistoryActivity" />
+        <activity android:name=".KcalLimitActivity" />
+        <activity android:name=".CheckKcalLimitActivity" />
     </application>
 
 </manifest>
