@@ -87,6 +87,14 @@ This feature matches ingredients against a user-defined allergy list.
 - Implemented local scan history with Room Database and custom adapter
 - Grouped product history view by date
 
+## Recent Updates (as of 05/12)
+- Color for the app:
+  Name	HEX Code	Use Case Suggestion
+  Amber 500	#FF9800	Vibrant and bold, great for primary color
+  Deep Orange	#FF5722	Rich and dynamic, good for action buttons
+  Orange 300	#FFB74D	Softer, warm background or card color
+  Orange 700	#F57C00	Darker accent, great for headers or toolbar
+
 ---
 
 ## Features Implemented
