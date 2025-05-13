@@ -95,6 +95,11 @@ This feature matches ingredients against a user-defined allergy list.
   Orange 300	#FFB74D	Softer, warm background or card color
   Orange 700	#F57C00	Darker accent, great for headers or toolbar
 
+- Add Kcal limit setting and warning system:
+  - Added KcalLimitActivity to allow users to set and save daily kcal limits using SharedPreferences
+  - Integrated CheckKcalLimitActivity to compare scanned product kcal with the set limit
+  - Displays warning if product exceeds limit, or confirmation if within limit
+  - Hooked into barcode scanning flow and updated UI accordingly
 ---
 
 ## Features Implemented
