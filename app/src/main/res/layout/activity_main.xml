@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
     android:padding="20dp"
+    android:background="#FFF3E0"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -53,17 +53,20 @@
         <!-- Capture Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCapture"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Capture Image" />
+            android:text="📷 Capture Image"
+            app:backgroundTint="#FF9800"
+            android:textColor="@android:color/white" />
 
         <!-- Scan Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnScanBarcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scan Barcode"
+            android:text="🔍 Scan Barcode"
+            app:backgroundTint="#F57C00"
+            android:textColor="@android:color/white"
             android:layout_marginTop="12dp" />
 
         <!-- Save Button -->
@@ -71,7 +74,9 @@
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Text"
+            android:text="💾 Save Text"
+            app:backgroundTint="#FF9800"
+            android:textColor="@android:color/white"
             android:layout_marginTop="12dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -79,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="View History"
+            app:backgroundTint="#F57C00"
             android:layout_marginTop="12dp" />
 
 
