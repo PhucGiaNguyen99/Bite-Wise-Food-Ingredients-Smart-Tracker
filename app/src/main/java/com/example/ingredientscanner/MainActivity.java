@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
 
         btnSetKcalLimit.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, KcalLimitActivity.class));
+            startActivity(new Intent(MainActivity.this, NutritionPreferencesActivity.class));
         });
     }
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
 
         // Launch CheckKcalLimitActivity with all product info
-        Intent kcalIntent = new Intent(MainActivity.this, CheckKcalLimitActivity.class);
+        Intent kcalIntent = new Intent(MainActivity.this, ScanAnalysisActivity.class);
         kcalIntent.putExtra("productName", product.product.product_name);
         kcalIntent.putExtra("brand", product.product.brands);
         kcalIntent.putExtra("ingredients", product.product.ingredients_text);
