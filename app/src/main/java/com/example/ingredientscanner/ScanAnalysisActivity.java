@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.content.Context;
 import android.widget.Toast;
+import java.util.List;
+import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,40 +37,16 @@ public class ScanAnalysisActivity extends AppCompatActivity {
         // Prepare userAllergyKeywords checking
         boolean containsAllergen = false;
         String[] allergyKeywords = userAllergyKeywords.split(",");
-        StringBuilder detectedAllergens = new StringBuilder();
 
         // Calories check logic
-        if (scannedCalories > userCalorieLimit) {
-            kcalCheckResultTextView.setText("⚠️ Warning: This product exceeds your daily kcal limit!\n" +
-                    "----------------------------------------\n" +
-                    "Scanned: " + scannedCalories + " kcal\nLimit: " + userCalorieLimit + " kcal");
-            kcalCheckResultTextView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-        } else {
-            kcalCheckResultTextView.setText("✅ This product is within your set kcal limit.\n" +
-                    "----------------------------------------\n" +
-                    "Scanned: " + scannedCalories + " kcal\nLimit: " + userCalorieLimit + " kcal");
-            kcalCheckResultTextView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-        }
-
-        // Allergy keyword check using basic NLP keyword matching
-        if (scannedIngredientList != null) {
-            String normalizedIngredients = scannedIngredientList.toLowerCase();
-
-            for (String keyword: allergyKeywords) {
-                String normalizedKeyword= keyword.trim().toLowerCase();
-                if (!normalizedKeyword.isEmpty() && normalizedIngredients.contains(normalizedKeyword)) {
-                    containsAllergen = true;
-                    detectedAllergens.append(normalizedKeyword).append("\n");
-                }
+        List<String> detectedAllergens = getDetectedAllergens(scannedIngredientList, userAllergyKeywords);
+        if (!detectedAllergens.isEmpty()) {
+            StringBuilder msg = new StringBuilder("Allergy Warning!\nThis product may contain:\n");
+            for (String allergen : detectedAllergens) {
+                msg.append(allergen).append("\n");
             }
-        }
-
-        if (containsAllergen) {
-            Toast.makeText(this,
-                    "Allergy Warning!\nThis product may contain:\n" + detectedAllergens,
-                    Toast.LENGTH_LONG).show();
-        }
-        else {
+            Toast.makeText(this, msg.toString(), Toast.LENGTH_LONG).show();
+        } else {
             Toast.makeText(this, "No allergens detected in this product.", Toast.LENGTH_LONG).show();
         }
 
@@ -79,5 +57,27 @@ public class ScanAnalysisActivity extends AppCompatActivity {
             detailIntent.putExtras(getIntent()); // forward all product details
             startActivity(detailIntent);
         });
+    }
+
+    // Helper function to check if over calorie limit
+    private boolean isOverCaloriesLimit(float scannedCalories, float userLimt) {
+        return scannedCalories > userLimt;
+    }
+
+    // Helper function to find allergens from ingredient list
+    private List<String> getDetectedAllergens(String ingredients, String keywordsCsv) {
+        List<String> detected = new ArrayList<>();
+        if (ingredients == null || keywordsCsv == null) return detected;
+
+        String[] keywords = keywordsCsv.split(",");
+        String normalizedIngredients = ingredients.toLowerCase();
+
+        for (String keyword : keywords) {
+            String trimmed = keyword.trim().toLowerCase();
+            if (!trimmed.isEmpty() && normalizedIngredients.contains(trimmed)) {
+                detected.add(trimmed);
+            }
+        }
+        return detected;
     }
 }
