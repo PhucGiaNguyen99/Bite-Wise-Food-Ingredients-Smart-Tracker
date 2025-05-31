@@ -16,7 +16,7 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.kcal_limit_activity);
+        setContentView(R.layout.activity_nutrition_preferences);
 
         caloriesLimitEditText = findViewById(R.id.kcalLimitInput);
         allergyKeywordsEditText = findViewById(R.id.allergyInput);

@@ -36,11 +36,29 @@
             android:background="@drawable/rounded_border"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/saveKcalLimitBtn"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Allergy Keywords (comma separated)"
+            android:textSize="22sp"
+            android:textColor="#E65100"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
+
+        <EditText
+            android:id="@+id/allergyInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Limit"
+            android:hint="e.g. peanuts, gluten, soy"
+            android:background="@drawable/rounded_border"
+            android:padding="12dp"
+            android:inputType="text"/>
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
             android:textColor="#FFFFFF"
             android:backgroundTint="#EF6C00"
             android:layout_marginTop="20dp"
