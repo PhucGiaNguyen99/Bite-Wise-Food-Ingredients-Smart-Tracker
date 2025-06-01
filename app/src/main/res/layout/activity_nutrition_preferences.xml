@@ -15,54 +15,73 @@
         android:elevation="4dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginHorizontal="8dp">
+        android:layout_marginHorizontal="8dp"
+        android:clipToPadding="false">
 
+        <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Daily Calorie Limit"
-            android:textSize="22sp"
+            android:text="Set Daily Preferences"
+            android:textSize="24sp"
             android:textColor="#E65100"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="32dp"
+            android:contentDescription="Section title" />
+
+        <!-- Calorie Limit Input -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Daily Calorie Limit"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp" />
 
         <EditText
             android:id="@+id/kcalLimitInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter kcal limit (e.g. 2000)"
+            android:hint="e.g. 2000"
             android:inputType="number"
             android:padding="12dp"
             android:background="@drawable/rounded_border"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:contentDescription="Enter your daily calorie limit" />
 
+        <!-- Allergen Input -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enter Allergy Keywords (comma separated)"
-            android:textSize="22sp"
-            android:textColor="#E65100"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:text="Allergy Keywords"
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/allergyInput"
+        <AutoCompleteTextView
+            android:id="@+id/allergenInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="e.g. peanuts, gluten, soy"
+            android:hint="Start typing to select (e.g. peanuts, gluten)"
+            android:completionThreshold="1"
+            android:inputType="text"
             android:background="@drawable/rounded_border"
             android:padding="12dp"
-            android:inputType="text"/>
+            android:textSize="16sp"
+            android:contentDescription="Enter allergen keywords" />
 
+        <!-- Save Button -->
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="Save Preferences"
             android:textColor="#FFFFFF"
             android:backgroundTint="#EF6C00"
-            android:layout_marginTop="20dp"
-            android:padding="12dp" />
+            android:layout_marginTop="32dp"
+            android:padding="12dp"
+            android:contentDescription="Save button" />
 
     </LinearLayout>
 </ScrollView>
