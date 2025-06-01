@@ -23,7 +23,12 @@ Although developed during a busy finals week and job search, this app reflects m
   - Stores product name, ingredient list, calories, and scan timestamp.
   - Displays entries grouped by date using ListView and a custom adapter.
 - **Smart notifications** – Timely alerts when scanned products contain allergens or exceed nutrition targets.
+- **Smart allergen input with live suggestions** – Allows users to select allergens from real-time ingredient suggestions powered by the Open Food Facts API, reducing typos and ensuring consistent detection. In addition to text normalization and keyword matching, users now select allergens from live suggestions powered by the Open Food Facts ingredient database. This ensures accurate, typo-free entries and enhances detection reliability.
 - **Personalized dashboard** *(planned)* – Visual insights with charts and progress tracking.
+
+---
+
+
 
 ---
 
