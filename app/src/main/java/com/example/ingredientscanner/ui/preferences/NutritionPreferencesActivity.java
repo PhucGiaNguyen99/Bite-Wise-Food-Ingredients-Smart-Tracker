@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.ui.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +13,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ingredientscanner.APIModels.IngredientResponse;
-import com.example.ingredientscanner.APIModels.IngredientSuggestion;
+import com.example.ingredientscanner.R;
+import com.example.ingredientscanner.data.remote.models.IngredientResponse;
+import com.example.ingredientscanner.data.remote.models.IngredientSuggestion;
+import com.example.ingredientscanner.data.remote.OpenFoodFactApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NutritionPreferencesActivity extends AppCompatActivity {
+    private List<IngredientSuggestion> cachedIngredients = new ArrayList<>();
+
     private EditText caloriesLimitEditText;
     private AutoCompleteTextView allergyInputField;
     private Button savePreferencesButton;
@@ -49,6 +53,8 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         api = retrofit.create(OpenFoodFactApi.class);
+
+        fetchFullIngredientList();
 
         // Find views
         caloriesLimitEditText = findViewById(R.id.kcalLimitInput);
@@ -75,12 +81,13 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                debounceTimer.cancel();
+                Timer oldTimer = debounceTimer;
                 debounceTimer = new Timer();
+                oldTimer.cancel();
                 debounceTimer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        runOnUiThread(() -> fetchIngredientSuggestions(s.toString()));
+                        runOnUiThread(() -> filterLocalSuggestion(s.toString()));
                     }
                 }, API_DELAY);
             }
@@ -118,7 +125,7 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
                         .apply();
 
                 Toast.makeText(this, "Preferences saved successfully.", Toast.LENGTH_SHORT).show();
-                finish(); // Close the activity and return
+                // finish(); // Close the activity and return
 
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Invalid number format for calorie limit.", Toast.LENGTH_SHORT).show();
@@ -126,31 +133,43 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
         });
     }
 
-    // Suggestion fetch logic
-    private void fetchIngredientSuggestions(String query) {
-        if (query.length() < 2) return;
-
-        api.getIngredients(query).enqueue(new Callback<IngredientResponse>() {
+    // Helper function to retrieve the ingredient list retrieved from the API
+    private void fetchFullIngredientList() {
+        api.getAllIngredients().enqueue(new Callback<IngredientResponse>() {
             @Override
             public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<String> suggestions = new ArrayList<>();
-                    for (IngredientSuggestion suggestion : response.body().ingredients) {
-                        suggestions.add(suggestion.text);
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(NutritionPreferencesActivity.this,
-                            android.R.layout.simple_dropdown_item_1line, suggestions);
-                    allergyInputField.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    allergyInputField.showDropDown();
+                if (response.isSuccessful() && response.body() != null && response.body().ingredients != null) {
+                    cachedIngredients = response.body().ingredients;
+                } else {
+                    Toast.makeText(NutritionPreferencesActivity.this, "Failed to load ingredient list.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<IngredientResponse> call, Throwable t) {
-                Toast.makeText(NutritionPreferencesActivity.this, "Failed to fetch suggestions", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NutritionPreferencesActivity.this, "API error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // Suggestion fetch logic
+    private void filterLocalSuggestion(String query) {
+        if (query.length() < 2 || cachedIngredients.isEmpty()) return;
+
+        List<String> filtered = new ArrayList<>();
+        for (IngredientSuggestion item : cachedIngredients) {
+            if (item.text != null && item.text.toLowerCase().contains(query.toLowerCase())) {
+                filtered.add(item.text);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, filtered);
+        allergyInputField.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        if (!isFinishing() && !isDestroyed()) {
+            allergyInputField.showDropDown();
+        }
     }
 }

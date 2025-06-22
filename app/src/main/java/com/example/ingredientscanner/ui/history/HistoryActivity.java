@@ -1,8 +1,7 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.ui.history;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.example.ingredientscanner.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

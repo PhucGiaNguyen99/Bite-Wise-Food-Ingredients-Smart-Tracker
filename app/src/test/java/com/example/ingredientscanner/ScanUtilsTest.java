@@ -4,6 +4,8 @@ import org.junit.Test;
 import java.util.List;
 import static org.junit.Assert.*;
 
+import com.example.ingredientscanner.ui.scan.ScanUtils;
+
 public class ScanUtilsTest {
     @Test
     public void testIsOverCaloriesLimit() {

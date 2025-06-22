@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.ui.scan;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ingredientscanner.R;
 
 /**
  * Activity that checks if the scanned product exceeds the user's daily calorie limit

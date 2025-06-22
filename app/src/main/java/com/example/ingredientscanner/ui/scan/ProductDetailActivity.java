@@ -1,11 +1,11 @@
-package com.example.ingredientscanner;
-
-import static android.content.Intent.getIntent;
+package com.example.ingredientscanner.ui.scan;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ingredientscanner.R;
 
 public class ProductDetailActivity extends AppCompatActivity {
     private TextView productNameView, brandView, ingredientsView, caloriesView;

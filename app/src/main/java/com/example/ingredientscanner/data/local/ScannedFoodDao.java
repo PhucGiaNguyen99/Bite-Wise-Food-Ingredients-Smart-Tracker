@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.data.local;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

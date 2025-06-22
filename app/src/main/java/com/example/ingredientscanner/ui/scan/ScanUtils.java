@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.ui.scan;
 
 import java.util.ArrayList;
 import java.util.List;

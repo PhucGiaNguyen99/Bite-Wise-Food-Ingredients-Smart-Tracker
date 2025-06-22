@@ -22,7 +22,7 @@
         android:theme="@style/Theme.IngredientScanner"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,10 +30,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProductDetailActivity" />
-        <activity android:name=".HistoryActivity" />
-        <activity android:name=".NutritionPreferencesActivity" />
-        <activity android:name=".ScanAnalysisActivity" />
+        <activity android:name=".ui.scan.ProductDetailActivity" />
+        <activity android:name=".ui.history.HistoryActivity" />
+        <activity android:name=".ui.preferences.NutritionPreferencesActivity" />
+        <activity android:name=".ui.scan.ScanAnalysisActivity" />
     </application>
 
 </manifest>

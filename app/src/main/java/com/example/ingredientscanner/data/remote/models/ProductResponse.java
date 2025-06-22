@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.data.remote.models;
 
 import com.google.gson.annotations.SerializedName;
 

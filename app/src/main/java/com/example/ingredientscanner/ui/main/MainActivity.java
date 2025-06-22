@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.ui.main;
 
 import android.Manifest;
 import android.content.Intent;
@@ -18,6 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.ingredientscanner.ui.history.HistoryActivity;
+import com.example.ingredientscanner.ui.preferences.NutritionPreferencesActivity;
+import com.example.ingredientscanner.ui.scan.ProductDetailActivity;
+import com.example.ingredientscanner.R;
+import com.example.ingredientscanner.ui.scan.ScanAnalysisActivity;
+import com.example.ingredientscanner.data.remote.models.ProductResponse;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;

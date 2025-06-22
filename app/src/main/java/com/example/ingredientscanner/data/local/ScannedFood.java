@@ -1,4 +1,4 @@
-package com.example.ingredientscanner;
+package com.example.ingredientscanner.data.local;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
