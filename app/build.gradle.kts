@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.room.common)
     implementation(libs.room.runtime)
     implementation(libs.play.services.mlkit.barcode.scanning)
+    implementation(libs.androidx.junit)
+    testImplementation(libs.ext.junit)
     kapt(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -61,4 +63,8 @@ dependencies {
     implementation(libs.retrofit.gson)
     testImplementation(libs.mockito.core)
     androidTestImplementation(libs.mockito.android)
+    // Retrofit testing
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
+    testImplementation("com.google.code.gson:gson:2.10.1")
+    testImplementation("junit:junit:4.13.2")
 }

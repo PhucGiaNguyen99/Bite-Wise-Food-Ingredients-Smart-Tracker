@@ -14,6 +14,7 @@ kotlin = "1.9.22"
 room = "2.6.1"
 roomCommonJvm = "2.7.1"
 playServicesMlkitBarcodeScanning = "18.3.1"
+androidxJunit = "1.2.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -37,6 +38,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version = "2.
 room-common = { group = "androidx.room", name = "room-common", version = "2.6.1" }
 room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
 play-services-mlkit-barcode-scanning = { group = "com.google.android.gms", name = "play-services-mlkit-barcode-scanning", version.ref = "playServicesMlkitBarcodeScanning" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 
 
 [plugins]
