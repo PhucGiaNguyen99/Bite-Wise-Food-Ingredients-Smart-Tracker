@@ -50,15 +50,6 @@
             android:background="@drawable/rounded_border"
             android:layout_marginBottom="24dp" />
 
-        <!-- Capture Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCapture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📷 Capture Image"
-            app:backgroundTint="#FF9800"
-            android:textColor="@android:color/white" />
-
         <!-- Scan Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnScanBarcode"

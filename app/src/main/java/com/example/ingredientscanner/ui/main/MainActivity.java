@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.ingredientscanner.data.local.AppDatabase;
+import com.example.ingredientscanner.data.local.ScannedFood;
+import com.example.ingredientscanner.data.remote.OpenFoodFactAPI;
 import com.example.ingredientscanner.ui.history.HistoryActivity;
 import com.example.ingredientscanner.ui.preferences.NutritionPreferencesActivity;
 import com.example.ingredientscanner.ui.scan.ProductDetailActivity;
@@ -41,10 +44,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final int CAMERA_PERMISSION_CODE = 101;
 
-    private Button btnCapture, btnScanBarcode, btnSave, btnHistory, btnSetKcalLimit;
+    private Button btnScanBarcode, btnSave, btnHistory, btnSetKcalLimit;
     private ImageView imageView;
     private Bitmap capturedImage;
 
@@ -57,40 +59,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-    private final ActivityResultLauncher<Intent> captureLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    capturedImage = (Bitmap) result.getData().getExtras().get("data");
-                    imageView.setImageBitmap(capturedImage);
-                }
-            });
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnCapture = findViewById(R.id.btnCapture);
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
         btnSave = findViewById(R.id.btnSave);
-
         btnHistory = findViewById(R.id.btnHistory);
-
         imageView = findViewById(R.id.imageView);
-
-        btnCapture.setOnClickListener(v -> {
-            if (checkCameraPermission()) {
-                openCameraForImage();
-            } else {
-                requestCameraPermission();
-            }
-        });
+        btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
 
         btnScanBarcode.setOnClickListener(v -> {
-            if (checkCameraPermission()) {
-                openCameraForBarcode();
-            } else {
+            if (!checkCameraPermission()) {
                 requestCameraPermission();
+            } else {
+                openCameraForBarcode();
             }
         });
 
@@ -100,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
-
-        btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
 
         btnSetKcalLimit.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, NutritionPreferencesActivity.class));
@@ -125,11 +107,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Camera permission denied.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void openCameraForImage() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        captureLauncher.launch(cameraIntent);
     }
 
     private void openCameraForBarcode() {
@@ -224,10 +201,5 @@ public class MainActivity extends AppCompatActivity {
             Log.e("SaveFile", "Failed to save file", e);
             Toast.makeText(this, "Error saving file!", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    interface OpenFoodFactAPI {
-        @GET("api/v0/product/{barcode}.json")
-        Call<ProductResponse> getProductByBarcode(@Path("barcode") String barcode);
     }
 }
