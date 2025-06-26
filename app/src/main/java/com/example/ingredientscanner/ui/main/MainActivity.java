@@ -158,22 +158,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigateToProductDetail(ProductResponse product) {
-        ScannedFood food = new ScannedFood(
-                product.product.product_name,
-                product.product.ingredients_text,
-                product.product.nutriments != null ? product.product.nutriments.energyKcal : 0,
-                System.currentTimeMillis()
-        );
-
-        Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
-        intent.putExtra("productName", product.product.product_name != null ? product.product.product_name : "Unknown");
-        intent.putExtra("brand", product.product.brands != null ? product.product.brands : "N/A");
-        intent.putExtra("ingredients", product.product.ingredients_text != null ? product.product.ingredients_text : "No ingredients listed");
-
-        // Use a background thread
-        new Thread(() -> {
-            AppDatabase.getInstance(getApplicationContext()).scannedFoodDao().insert(food);
-        }).start();
+        // Save scanned product to database
+        saveProductToDatabase(product);
 
         // Launch CheckKcalLimitActivity with all product info
         Intent kcalIntent = new Intent(MainActivity.this, ScanAnalysisActivity.class);
@@ -184,6 +170,26 @@ public class MainActivity extends AppCompatActivity {
         kcalIntent.putExtra("scannedCalories", product.product.nutriments != null ? product.product.nutriments.energyKcal : 0);
 
         startActivity(kcalIntent);
+    }
+
+    /**
+     * Saves a scanned product to the local Room database.
+     *
+     * @param product The product data returned from OpenFoodFacts.
+     */
+    private void saveProductToDatabase(ProductResponse product) {
+        ScannedFood food = new ScannedFood(
+                product.product.product_name,
+                product.product.ingredients_text,
+                product.product.nutriments != null ? product.product.nutriments.energyKcal : 0,
+                System.currentTimeMillis()
+        );
+
+        new Thread(() -> {
+            AppDatabase.getInstance(getApplicationContext())
+                    .scannedFoodDao()
+                    .insert(food);
+        }).start();
     }
 
     private void saveCapturedImageText() {
