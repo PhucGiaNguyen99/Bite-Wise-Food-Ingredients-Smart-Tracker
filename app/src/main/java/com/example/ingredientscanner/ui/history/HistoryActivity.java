@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.ingredientscanner.R;
+import com.example.ingredientscanner.data.local.AppDatabase;
+import com.example.ingredientscanner.data.local.ScannedFood;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class HistoryActivity extends AppCompatActivity {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         for (ScannedFood item : history) {
-            String dateKey = dateOnlyFormat.format(item.scanTime);
+            String dateKey = dateOnlyFormat.format(item.getScanTime());
             if (!groupedByDate.containsKey(dateKey)) {
                 groupedByDate.put(dateKey, new ArrayList<>());
             }
@@ -48,7 +50,7 @@ public class HistoryActivity extends AppCompatActivity {
         for (String date : groupedByDate.keySet()) {
             displayList.add("📅 " + date);  // Date header
             for (ScannedFood item : groupedByDate.get(date)) {
-                displayList.add("• " + item.productName + " (" + timeFormat.format(item.scanTime) + ")");
+                displayList.add("• " + item.getProductName() + " (" + timeFormat.format(item.getScanTime()) + ")");
             }
         }
 

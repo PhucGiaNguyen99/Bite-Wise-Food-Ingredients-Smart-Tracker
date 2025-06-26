@@ -8,7 +8,6 @@ public class ScannedFood {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
     private String productName;
     private String ingredients;
     private float calories;
