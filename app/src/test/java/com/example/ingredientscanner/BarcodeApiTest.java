@@ -6,9 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.ingredientscanner.data.remote.OpenFoodFactAPI;
 import com.example.ingredientscanner.data.remote.models.ProductResponse;
-import com.example.ingredientscanner.ui.main.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;

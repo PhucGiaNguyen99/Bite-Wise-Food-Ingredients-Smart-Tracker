@@ -67,4 +67,8 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
     testImplementation("com.google.code.gson:gson:2.10.1")
     testImplementation("junit:junit:4.13.2")
+
+    // OkHttp Logging Interceptor
+    implementation(libs.okhttp.logging)
+
 }

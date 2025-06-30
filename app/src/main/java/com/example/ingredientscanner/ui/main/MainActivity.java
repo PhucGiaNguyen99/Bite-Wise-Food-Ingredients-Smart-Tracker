@@ -20,10 +20,11 @@ import androidx.core.content.ContextCompat;
 
 import com.example.ingredientscanner.data.local.AppDatabase;
 import com.example.ingredientscanner.data.local.ScannedFood;
-import com.example.ingredientscanner.data.remote.OpenFoodFactAPI;
+import com.example.ingredientscanner.data.remote.models.NutritionixAPI;
+import com.example.ingredientscanner.data.remote.models.NutritionixResponse;
+import com.example.ingredientscanner.data.remote.models.RetrofitClient;
 import com.example.ingredientscanner.ui.history.HistoryActivity;
 import com.example.ingredientscanner.ui.preferences.NutritionPreferencesActivity;
-import com.example.ingredientscanner.ui.scan.ProductDetailActivity;
 import com.example.ingredientscanner.R;
 import com.example.ingredientscanner.ui.scan.ScanAnalysisActivity;
 import com.example.ingredientscanner.data.remote.models.ProductResponse;
@@ -38,15 +39,11 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 101;
 
-    private Button btnScanBarcode, btnSave, btnHistory, btnSetKcalLimit;
+    private Button btnScanBarcode, btnSave, btnHistory, btnSetKcalLimit, btnTestBarcode;
     private ImageView imageView;
     private Bitmap capturedImage;
 
@@ -69,13 +66,19 @@ public class MainActivity extends AppCompatActivity {
         btnHistory = findViewById(R.id.btnHistory);
         imageView = findViewById(R.id.imageView);
         btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
-
+        btnTestBarcode = findViewById(R.id.btnTestBarcode);
         btnScanBarcode.setOnClickListener(v -> {
             if (!checkCameraPermission()) {
                 requestCameraPermission();
             } else {
                 openCameraForBarcode();
             }
+        });
+
+        btnTestBarcode.setOnClickListener(v -> {
+            // Example default barcode for
+            String defaultBarcode = "5449000054227";
+            fetchProductByBarcode(defaultBarcode);
         });
 
         btnSave.setOnClickListener(v -> saveCapturedImageText());
@@ -88,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         btnSetKcalLimit.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, NutritionPreferencesActivity.class));
         });
+
+
     }
 
     private boolean checkCameraPermission() {
@@ -131,19 +136,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchProductByBarcode(String barcode) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://world.openfoodfacts.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        NutritionixAPI api = RetrofitClient.getInstance().create(NutritionixAPI.class);
+        Call<NutritionixResponse> call = api.searchProduct(barcode);
 
-        OpenFoodFactAPI api = retrofit.create(OpenFoodFactAPI.class);
-        Call<ProductResponse> call = api.getProductByBarcode(barcode);
-
-        call.enqueue(new Callback<ProductResponse>() {
+        call.enqueue(new Callback<NutritionixResponse>() {
             @Override
-            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ProductResponse product = response.body();
+            public void onResponse(Call<NutritionixResponse> call, Response<NutritionixResponse> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().getFoods().isEmpty()) {
+                    NutritionixResponse.Product product = response.body().getFoods().get(0);
                     navigateToProductDetail(product);
                 } else {
                     Toast.makeText(MainActivity.this, "Product not found.", Toast.LENGTH_SHORT).show();
@@ -151,23 +151,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ProductResponse> call, Throwable t) {
+            public void onFailure(Call<NutritionixResponse> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Failed to fetch product data.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void navigateToProductDetail(ProductResponse product) {
-        // Save scanned product to database
-        saveProductToDatabase(product);
 
-        // Launch CheckKcalLimitActivity with all product info
+    private void navigateToProductDetail(NutritionixResponse.Product product) {
         Intent kcalIntent = new Intent(MainActivity.this, ScanAnalysisActivity.class);
-        kcalIntent.putExtra("productName", product.product.product_name);
-        kcalIntent.putExtra("brand", product.product.brands);
-        kcalIntent.putExtra("ingredients", product.product.ingredients_text);
-        kcalIntent.putExtra("calories", product.product.nutriments != null ? product.product.nutriments.energyKcal : 0);
-        kcalIntent.putExtra("scannedCalories", product.product.nutriments != null ? product.product.nutriments.energyKcal : 0);
+        kcalIntent.putExtra("productName", product.name);
+        kcalIntent.putExtra("brand", product.brand);
+        kcalIntent.putExtra("ingredients", product.ingredients != null ? product.ingredients : "Not provided");
+        kcalIntent.putExtra("calories", product.calories);
+        kcalIntent.putExtra("scannedCalories", product.calories); // same value reused for now
 
         startActivity(kcalIntent);
     }

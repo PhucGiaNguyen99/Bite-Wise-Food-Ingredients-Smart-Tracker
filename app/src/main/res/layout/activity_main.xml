@@ -87,6 +87,14 @@
             android:backgroundTint="#EF6C00"
             android:textColor="#FFFFFF" />
 
+        <Button
+            android:id="@+id/btnTestBarcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test Barcode"
+            />
+
+
 
 
     </LinearLayout>

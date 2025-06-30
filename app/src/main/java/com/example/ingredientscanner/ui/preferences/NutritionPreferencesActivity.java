@@ -8,7 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ingredientscanner.R;
-import com.example.ingredientscanner.data.remote.OpenFoodFactAPI;
 
 public class NutritionPreferencesActivity extends AppCompatActivity {
     private EditText caloriesLimitEditText, allergyInputEditText;

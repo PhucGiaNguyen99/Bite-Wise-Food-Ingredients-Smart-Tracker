@@ -27,36 +27,27 @@ public class ScanAnalysisActivity extends AppCompatActivity {
 
         TextView kcalCheckResultTextView = findViewById(R.id.kcalCheckResult);
 
-        // Retrieve the scanned product data from intent
+        // Retrieve scanned product data from Intent
         float scannedCalories = getIntent().getFloatExtra("scannedCalories", 0);
         String scannedIngredientList = getIntent().getStringExtra("ingredients");
 
-        // Load the user-defined preferences
+        // Retrieve user preferences
         SharedPreferences preferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         float userCalorieLimit = preferences.getFloat("kcal_limit", 0);
-        String userAllergyKeywords = preferences.getString("userAllergyKeywords", "");
+        String userAllergyKeywords = preferences.getString("allergy", "");
 
-        // Prepare userAllergyKeywords checking
-        boolean containsAllergen = false;
-        String[] allergyKeywords = userAllergyKeywords.split(",");
+        // Perform health and safety checks
+        boolean isOverLimit = isOverCaloriesLimit(scannedCalories, userCalorieLimit);
+        List<String> allergens = getDetectedAllergens(scannedIngredientList, userAllergyKeywords);
 
-        // Calories check logic
-        List<String> detectedAllergens = getDetectedAllergens(scannedIngredientList, userAllergyKeywords);
-        if (!detectedAllergens.isEmpty()) {
-            StringBuilder msg = new StringBuilder("Allergy Warning!\nThis product may contain:\n");
-            for (String allergen : detectedAllergens) {
-                msg.append(allergen).append("\n");
-            }
-            Toast.makeText(this, msg.toString(), Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "No allergens detected in this product.", Toast.LENGTH_LONG).show();
-        }
+        // Display result
+        displayAnalysisResult(kcalCheckResultTextView, isOverLimit, userCalorieLimit, allergens);
 
-        // Handle "View Details" button click
+        // View product detail
         Button viewDetailsButton = findViewById(R.id.viewDetailsButton);
         viewDetailsButton.setOnClickListener(v -> {
             Intent detailIntent = new Intent(this, ProductDetailActivity.class);
-            detailIntent.putExtras(getIntent()); // forward all product details
+            detailIntent.putExtras(getIntent());
             startActivity(detailIntent);
         });
     }
@@ -82,4 +73,28 @@ public class ScanAnalysisActivity extends AppCompatActivity {
         }
         return detected;
     }
+
+    private void displayAnalysisResult(TextView resultView, boolean overCalorie, float limit, List<String> allergens) {
+        StringBuilder result = new StringBuilder();
+
+        if (overCalorie) {
+            result.append("⚠️ This product exceeds your calorie limit of ")
+                    .append(limit)
+                    .append(" kcal.\n");
+        }
+
+        if (!allergens.isEmpty()) {
+            result.append("🚨 Allergy Warning: Contains ")
+                    .append(String.join(", ", allergens))
+                    .append(".\n");
+        }
+
+        if (result.length() == 0) {
+            result.append("✅ Product is safe based on your preferences.");
+        }
+
+        resultView.setText(result.toString());
+        Toast.makeText(this, result.toString(), Toast.LENGTH_LONG).show();
+    }
+
 }
