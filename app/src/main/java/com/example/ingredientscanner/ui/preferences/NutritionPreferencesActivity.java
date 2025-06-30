@@ -13,8 +13,6 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
     private EditText caloriesLimitEditText, allergyInputEditText;
     // private AutoCompleteTextView allergyInputField;
     private Button savePreferencesButton;
-
-    private OpenFoodFactAPI api;
     private SharedPreferences sharedPreferences;
 
     @Override

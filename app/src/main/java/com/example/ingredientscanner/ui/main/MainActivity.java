@@ -163,8 +163,7 @@ public class MainActivity extends AppCompatActivity {
         kcalIntent.putExtra("productName", product.name);
         kcalIntent.putExtra("brand", product.brand);
         kcalIntent.putExtra("ingredients", product.ingredients != null ? product.ingredients : "Not provided");
-        kcalIntent.putExtra("calories", product.calories);
-        kcalIntent.putExtra("scannedCalories", product.calories); // same value reused for now
+        kcalIntent.putExtra("calories", String.valueOf(product.calories));
 
         startActivity(kcalIntent);
     }
