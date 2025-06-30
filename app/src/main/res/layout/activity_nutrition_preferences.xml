@@ -1,87 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF3E0"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
         android:background="#FFFFFF"
-        android:padding="20dp"
-        android:elevation="4dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginHorizontal="8dp"
-        android:clipToPadding="false">
+        android:padding="24dp"
+        android:elevation="6dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginHorizontal="12dp"
+        android:clipToPadding="false"
+        android:gravity="center_horizontal">
 
-        <!-- Title -->
+        <!-- Header -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Daily Preferences"
-            android:textSize="24sp"
-            android:textColor="#E65100"
+            android:text="Nutrition Preferences"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:layout_marginBottom="32dp"
-            android:contentDescription="Section title" />
+            android:textColor="#BF360C"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Calorie Limit Label -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daily Calorie Limit (kcal)"
+            android:textSize="16sp"
+            android:textColor="#444444"
+            android:layout_marginBottom="6dp" />
 
         <!-- Calorie Limit Input -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Daily Calorie Limit"
-            android:textSize="18sp"
-            android:textColor="#333333"
-            android:layout_marginBottom="8dp" />
-
         <EditText
             android:id="@+id/kcalLimitInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="e.g. 2000"
             android:inputType="number"
-            android:padding="12dp"
             android:background="@drawable/rounded_border"
+            android:paddingStart="16dp"
+            android:textSize="16sp" />
+
+        <!-- Allergen Label -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Allergens to Avoid"
             android:textSize="16sp"
-            android:contentDescription="Enter your daily calorie limit" />
+            android:textColor="#444444"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="6dp" />
 
         <!-- Allergen Input -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Allergy Keywords"
-            android:textSize="18sp"
-            android:textColor="#333333"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp" />
-
         <AutoCompleteTextView
             android:id="@+id/allergenInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Start typing to select (e.g. peanuts, gluten)"
-            android:completionThreshold="1"
+            android:layout_height="50dp"
+            android:hint="e.g. peanuts, soy, gluten"
             android:inputType="text"
+            android:completionThreshold="1"
             android:background="@drawable/rounded_border"
-            android:padding="12dp"
-            android:textSize="16sp"
-            android:contentDescription="Enter allergen keywords" />
+            android:paddingStart="16dp"
+            android:textSize="16sp" />
 
         <!-- Save Button -->
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="Save Preferences"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#EF6C00"
+            android:textSize="16sp"
             android:layout_marginTop="32dp"
-            android:padding="12dp"
-            android:contentDescription="Save button" />
+            android:backgroundTint="#FB8C00"
+            android:elevation="2dp" />
 
     </LinearLayout>
 </ScrollView>
