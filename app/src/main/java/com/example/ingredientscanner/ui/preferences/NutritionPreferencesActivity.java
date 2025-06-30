@@ -27,7 +27,7 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
         // Retrieve previously saved user preferences for daily calorie limit and allergen keywords
         // These values are used to prepopulate the input fields so the user can view or modify them
         SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        float savedCalorieLimit = preferences.getFloat("kcal_limit", 0);
+        int savedCalorieLimit = preferences.getInt("kcal_limit", 0);
         String savedAllergyKeywords = preferences.getString("allergy", "");
 
         if (savedCalorieLimit > 0) {
@@ -54,10 +54,10 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
             }
 
             try {
-                float calorieLimit = Float.parseFloat(caloriesLimitText);
+                int calorieLimit = Integer.parseInt(caloriesLimitText);
 
                 preferences.edit()
-                        .putFloat("kcal_limit", calorieLimit)
+                        .putInt("kcal_limit", calorieLimit)
                         .putString("allergy", allergyInputText)
                         .apply();
 
@@ -80,8 +80,8 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
         }
 
         try {
-            float calorieLimit = Float.parseFloat(input.trim());
-            return calorieLimit >= 1000 && calorieLimit <= 6000;
+            int calorieLimit = Integer.parseInt(input.trim());
+            return calorieLimit > 0 && calorieLimit <= 6000;
         } catch (NumberFormatException e) {
             return false;
         }
