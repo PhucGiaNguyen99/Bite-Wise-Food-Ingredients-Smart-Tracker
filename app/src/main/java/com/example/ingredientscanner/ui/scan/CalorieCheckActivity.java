@@ -51,6 +51,8 @@ public class CalorieCheckActivity extends AppCompatActivity {
 
             String finalMessage = resultMessage;
             runOnUiThread(() -> calorieSummaryText.setText(finalMessage));
+
+
         });
     }
 }

@@ -1,20 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFF3E0"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:baselineAligned="false">
 
+    <!-- Page Title -->
     <TextView
-        android:id="@+id/calorieSummaryText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:text="Today's Calorie Intake"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#E65100"
-        android:textAlignment="center"
-        android:text="Loading..."
-        android:lineSpacingExtra="8dp" />
+        android:layout_marginBottom="20dp" />
+
+    <!-- Progress bar while loading -->
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Summary in Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="#FFFFFF"
+        android:elevation="6dp"
+        app:cardCornerRadius="12dp">
+
+        <TextView
+            android:id="@+id/calorieSummaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textSize="18sp"
+            android:textColor="#333333"
+            android:padding="24dp"
+            android:lineSpacingExtra="8dp"
+            android:textAlignment="center" />
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
