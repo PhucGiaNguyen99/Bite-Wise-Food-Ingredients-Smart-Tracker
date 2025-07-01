@@ -26,6 +26,7 @@ import com.example.ingredientscanner.data.remote.models.RetrofitClient;
 import com.example.ingredientscanner.ui.history.HistoryActivity;
 import com.example.ingredientscanner.ui.preferences.NutritionPreferencesActivity;
 import com.example.ingredientscanner.R;
+import com.example.ingredientscanner.ui.scan.CalorieCheckActivity;
 import com.example.ingredientscanner.ui.scan.ScanAnalysisActivity;
 import com.example.ingredientscanner.data.remote.models.ProductResponse;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
@@ -43,7 +44,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 101;
 
-    private Button btnScanBarcode, btnHistory, btnSetKcalLimit, btnTestBarcode;
+    private Button btnScanBarcode, btnHistory, btnSetKcalLimit, btnTestBarcode, btnCheckCalories;
 
     private final ActivityResultLauncher<Intent> barcodeLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                     scanBarcode(barcodeImage);
                 }
             });
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         btnHistory = findViewById(R.id.btnHistory);
         btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
         btnTestBarcode = findViewById(R.id.btnTestBarcode);
+        btnCheckCalories = findViewById(R.id.btnCheckCalories);
+
         btnScanBarcode.setOnClickListener(v -> {
             if (!checkCameraPermission()) {
                 requestCameraPermission();
@@ -86,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, NutritionPreferencesActivity.class));
         });
 
-
+        btnCheckCalories.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CalorieCheckActivity.class);
+            startActivity(intent);
+        });
     }
 
     private boolean checkCameraPermission() {

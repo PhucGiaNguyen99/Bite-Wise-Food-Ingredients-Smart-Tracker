@@ -94,6 +94,15 @@
                     android:textColor="@android:color/white"
                     android:layout_marginTop="12dp" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCheckCalories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Check Today's Calories"
+                    android:layout_marginTop="12dp"
+                    app:backgroundTint="#F57C00"
+                    android:textColor="@android:color/white" />
+
                 <!-- Test Barcode Button (Dev Tool) -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnTestBarcode"
