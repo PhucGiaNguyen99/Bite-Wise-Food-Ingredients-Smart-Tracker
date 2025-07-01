@@ -1,5 +1,6 @@
 package com.example.ingredientscanner.ui.preferences;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,6 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ingredientscanner.R;
+import com.example.ingredientscanner.ui.history.HistoryActivity;
+import com.example.ingredientscanner.ui.main.MainActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -90,6 +93,8 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Preferences saved successfully.", Toast.LENGTH_SHORT).show();
 
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
 
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Unexpected error parsing calories.", Toast.LENGTH_SHORT).show();
