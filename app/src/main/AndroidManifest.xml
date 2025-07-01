@@ -34,6 +34,7 @@
         <activity android:name=".ui.history.HistoryActivity" />
         <activity android:name=".ui.preferences.NutritionPreferencesActivity" />
         <activity android:name=".ui.scan.ScanAnalysisActivity" />
+        <activity android:name=".ui.scan.CalorieCheckActivity" />
     </application>
 
 </manifest>
