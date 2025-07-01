@@ -33,7 +33,7 @@ public class ScanAnalysisActivity extends AppCompatActivity {
 
         // Retrieve user preferences
         SharedPreferences preferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
-        int userCalorieLimit = preferences.getInt("kcal_limit", 0);
+        float userCalorieLimit = preferences.getFloat("kcal_limit", 0f);
         String userAllergyKeywords = preferences.getString("allergy", "");
 
         // Perform health and safety checks
@@ -53,7 +53,7 @@ public class ScanAnalysisActivity extends AppCompatActivity {
     }
 
     // Helper function to check if over calorie limit
-    private boolean isOverCaloriesLimit(float scannedCalories, int userLimt) {
+    private boolean isOverCaloriesLimit(float scannedCalories, float userLimt) {
         return scannedCalories > userLimt;
     }
 
@@ -74,7 +74,7 @@ public class ScanAnalysisActivity extends AppCompatActivity {
         return detected;
     }
 
-    private void displayAnalysisResult(TextView resultView, boolean overCalorie, int limit, List<String> allergens) {
+    private void displayAnalysisResult(TextView resultView, boolean overCalorie, float limit, List<String> allergens) {
         StringBuilder result = new StringBuilder();
 
         if (overCalorie) {

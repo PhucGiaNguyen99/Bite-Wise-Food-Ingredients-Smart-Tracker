@@ -4,5 +4,5 @@ public class NutritionixItemResponse {
     public String item_name;
     public String brand_name;
     public String nf_ingredient_statement;
-    public Double nf_calories;
+    public Integer nf_calories;
 }

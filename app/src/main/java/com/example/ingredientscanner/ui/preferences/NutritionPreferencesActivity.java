@@ -84,10 +84,10 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
             String allergyInputText = allergens.toString();
 
             try {
-                float calorieLimit = Float.parseFloat(caloriesLimitText);
+                int calorieLimit = Integer.parseInt(caloriesLimitText);
 
                 sharedPreferences.edit()
-                        .putFloat("kcal_limit", calorieLimit)
+                        .putFloat("kcal_limit", (float) calorieLimit)
                         .putString("allergy", allergyInputText)
                         .apply();
 
@@ -114,7 +114,7 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
         }
 
         try {
-            float calorieLimit = Float.parseFloat(input.trim());
+            int calorieLimit = Integer.parseInt(input.trim());
             return calorieLimit > 0 && calorieLimit <= 6000;
         } catch (NumberFormatException e) {
             return false;
