@@ -25,59 +25,83 @@ import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    private ListView listView;
+    private List<ScannedFood> scannedHistory;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        ListView listView = findViewById(R.id.historyListView);
-        List<ScannedFood> history = AppDatabase.getInstance(this).scannedFoodDao().getAllScans();
+        listView = findViewById(R.id.historyListView);
 
-        Map<String, List<ScannedFood>> groupedByDate = new LinkedHashMap<>();
-        SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        loadHistoryFromRoom();
+    }
 
-        for (ScannedFood item : history) {
-            String dateKey = dateOnlyFormat.format(item.getScanTime());
-            if (!groupedByDate.containsKey(dateKey)) {
-                groupedByDate.put(dateKey, new ArrayList<>());
-            }
-            groupedByDate.get(dateKey).add(item);
-        }
+    private void loadHistoryFromRoom() {
+        new Thread(() -> {
+            scannedHistory = AppDatabase.getInstance(this).scannedFoodDao().getAllFoods();
 
-        // Prepare the display list
-        List<String> displayList = new ArrayList<>();
-        for (String date : groupedByDate.keySet()) {
-            displayList.add("📅 " + date);  // Date header
-            for (ScannedFood item : groupedByDate.get(date)) {
-                displayList.add("• " + item.getProductName() + " (" + timeFormat.format(item.getScanTime()) + ")");
-            }
-        }
-
-        // Improve the bold header of the items
-        // Keep the ListView visually distinguish the date group headers
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_history_entry, R.id.itemText, displayList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView itemText = view.findViewById(R.id.itemText);
-
-                String currentText = getItem(position);
-                if (currentText != null && currentText.startsWith("📅")) {
-                    itemText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
-                    itemText.setTextSize(18);
-                    itemText.setTypeface(null, Typeface.BOLD);
-                } else {
-                    itemText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
-                    itemText.setTextSize(16);
-                    itemText.setTypeface(null, Typeface.NORMAL);
+            runOnUiThread(() -> {
+                if (scannedHistory == null || scannedHistory.isEmpty()) {
+                    List<String> emptyMessage = new ArrayList<>();
+                    emptyMessage.add("No scanned products yet.");
+                    listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, emptyMessage));
+                    return;
                 }
 
-                return view;
+                Map<String, List<ScannedFood>> groupedByDate = groupScansByDate(scannedHistory);
+                List<String> displayList = formatDisplayList(groupedByDate);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_history_entry, R.id.itemText, displayList) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        TextView itemText = view.findViewById(R.id.itemText);
+                        String currentText = getItem(position);
+
+                        if (currentText != null && currentText.startsWith("📅")) {
+                            itemText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_orange_dark));
+                            itemText.setTypeface(null, Typeface.BOLD);
+                            itemText.setTextSize(18);
+                        } else {
+                            itemText.setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
+                            itemText.setTypeface(null, Typeface.NORMAL);
+                            itemText.setTextSize(16);
+                        }
+
+                        return view;
+                    }
+                };
+
+                listView.setAdapter(adapter);
+            });
+        }).start();
+    }
+
+    private Map<String, List<ScannedFood>> groupScansByDate(List<ScannedFood> history) {
+        Map<String, List<ScannedFood>> grouped = new LinkedHashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+
+        for (ScannedFood food : history) {
+            String dateKey = dateFormat.format(food.timestamp);
+            grouped.computeIfAbsent(dateKey, k -> new ArrayList<>()).add(food);
+        }
+
+        return grouped;
+    }
+
+    private List<String> formatDisplayList(Map<String, List<ScannedFood>> grouped) {
+        List<String> displayList = new ArrayList<>();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        for (String date : grouped.keySet()) {
+            displayList.add("📅 " + date);
+            for (ScannedFood food : grouped.get(date)) {
+                displayList.add("• " + food.name + " (" + timeFormat.format(food.timestamp) + ")");
             }
-        };
+        }
 
-
-        listView.setAdapter(adapter);
+        return displayList;
     }
 }
