@@ -8,9 +8,15 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ingredientscanner.R;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 public class NutritionPreferencesActivity extends AppCompatActivity {
-    private EditText caloriesLimitEditText, allergyInputEditText;
+    private EditText caloriesLimitEditText;
+
+    private EditText allergenEditText;
+
+    private ChipGroup allergenChipGroup;
     // private AutoCompleteTextView allergyInputField;
     private Button savePreferencesButton;
     private SharedPreferences sharedPreferences;
@@ -21,26 +27,41 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nutrition_preferences);
 
         caloriesLimitEditText = findViewById(R.id.kcalLimitInput);
-        allergyInputEditText = findViewById(R.id.allergenInput);
+        allergenEditText = findViewById(R.id.allergenEditText);
+        allergenChipGroup = findViewById(R.id.allergenChipGroup);
         savePreferencesButton = findViewById(R.id.saveBtn);
 
         // Retrieve previously saved user preferences for daily calorie limit and allergen keywords
         // These values are used to prepopulate the input fields so the user can view or modify them
-        SharedPreferences preferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        int savedCalorieLimit = preferences.getInt("kcal_limit", 0);
-        String savedAllergyKeywords = preferences.getString("allergy", "");
+        sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        float savedCalorieLimit = getSafeFloatPreference("kcal_limit", 0f);
+        String savedAllergyKeywords = sharedPreferences.getString("allergy", "");
 
+        // Pre-fill calorie limit
         if (savedCalorieLimit > 0) {
             caloriesLimitEditText.setText(String.valueOf(savedCalorieLimit));
         }
+
+        // Pre-fill allergens as chips
         if (!savedAllergyKeywords.isEmpty()) {
-            allergyInputEditText.setText(savedAllergyKeywords);
+            String[] keywords = savedAllergyKeywords.split(",");
+            for (String keyword : keywords) {
+                addChip(keyword.trim());
+            }
         }
+
+        allergenEditText.setOnEditorActionListener((v, actionId, event) -> {
+            String input = allergenEditText.getText().toString().trim();
+            if (!input.isEmpty()) {
+                addChip(input);
+                allergenEditText.setText("");
+            }
+            return true;
+        });
 
         // Save preferences on button click
         savePreferencesButton.setOnClickListener(v -> {
             String caloriesLimitText = caloriesLimitEditText.getText().toString().trim();
-            String allergyInputText = allergyInputEditText.getText().toString().trim();
 
             // Validate both inputs before saving
             if (!isValidCalorieLimit(caloriesLimitText)) {
@@ -48,20 +69,28 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
                 return;
             }
 
-            if (!isValidAllergyInput(allergyInputText)) {
-                allergyInputEditText.setError("Use only letters, commas, and spaces for allergens");
-                return;
+            // Collect allergens from ChipGroup
+            StringBuilder allergens = new StringBuilder();
+            for (int i = 0; i < allergenChipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) allergenChipGroup.getChildAt(i);
+                allergens.append(chip.getText().toString()).append(",");
             }
+            if (allergens.length() > 0) {
+                allergens.setLength(allergens.length() - 1); // remove last comma
+            }
+            String allergyInputText = allergens.toString();
 
             try {
-                int calorieLimit = Integer.parseInt(caloriesLimitText);
+                float calorieLimit = Float.parseFloat(caloriesLimitText);
 
-                preferences.edit()
-                        .putInt("kcal_limit", calorieLimit)
+                sharedPreferences.edit()
+                        .putFloat("kcal_limit", calorieLimit)
                         .putString("allergy", allergyInputText)
                         .apply();
 
                 Toast.makeText(this, "Preferences saved successfully.", Toast.LENGTH_SHORT).show();
+
+
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Unexpected error parsing calories.", Toast.LENGTH_SHORT).show();
             }
@@ -80,7 +109,7 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
         }
 
         try {
-            int calorieLimit = Integer.parseInt(input.trim());
+            float calorieLimit = Float.parseFloat(input.trim());
             return calorieLimit > 0 && calorieLimit <= 6000;
         } catch (NumberFormatException e) {
             return false;
@@ -100,5 +129,22 @@ public class NutritionPreferencesActivity extends AppCompatActivity {
 
         // Regex: allows letters (a-z, A-Z), commas, and spaces
         return input.trim().matches("^[a-zA-Z,\\s]+$");
+    }
+
+    private void addChip(String text) {
+        Chip chip = new Chip(this);
+        chip.setText(text);
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(v -> allergenChipGroup.removeView(chip));
+        allergenChipGroup.addView(chip);
+    }
+
+    private float getSafeFloatPreference(String key, float defaultValue) {
+        try {
+            return sharedPreferences.getFloat(key, defaultValue);
+        } catch (ClassCastException e) {
+            // Handle previously stored int
+            return (float) sharedPreferences.getInt(key, (int) defaultValue);
+        }
     }
 }
