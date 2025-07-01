@@ -43,18 +43,16 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CODE = 101;
 
-    private Button btnScanBarcode, btnSave, btnHistory, btnSetKcalLimit, btnTestBarcode;
-    private ImageView imageView;
-    private Bitmap capturedImage;
+    private Button btnScanBarcode, btnHistory, btnSetKcalLimit, btnTestBarcode;
 
     private final ActivityResultLauncher<Intent> barcodeLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bitmap barcodeImage = (Bitmap) result.getData().getExtras().get("data");
-                    imageView.setImageBitmap(barcodeImage);
                     scanBarcode(barcodeImage);
                 }
             });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnScanBarcode = findViewById(R.id.btnScanBarcode);
-        btnSave = findViewById(R.id.btnSave);
         btnHistory = findViewById(R.id.btnHistory);
-        imageView = findViewById(R.id.imageView);
         btnSetKcalLimit = findViewById(R.id.btnSetKcalLimit);
         btnTestBarcode = findViewById(R.id.btnTestBarcode);
         btnScanBarcode.setOnClickListener(v -> {
@@ -80,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
             String defaultBarcode = "5449000054227";
             fetchProductByBarcode(defaultBarcode);
         });
-
-        btnSave.setOnClickListener(v -> saveCapturedImageText());
 
         btnHistory.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
@@ -144,6 +138,22 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<NutritionixResponse> call, Response<NutritionixResponse> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().getFoods().isEmpty()) {
                     NutritionixResponse.Product product = response.body().getFoods().get(0);
+
+                    // Insert scanned product to database
+                    ScannedFood food = new ScannedFood(
+                            product.name,
+                            product.brand,
+                            product.ingredients != null ? product.ingredients : "Unknown",
+                            product.calories,
+                            System.currentTimeMillis()
+                    );
+
+                    new Thread(() -> {
+                        AppDatabase.getInstance(getApplicationContext())
+                                .scannedFoodDao()
+                                .insert(food);
+                    }).start();
+
                     navigateToProductDetail(product);
                 } else {
                     Toast.makeText(MainActivity.this, "Product not found.", Toast.LENGTH_SHORT).show();
@@ -166,42 +176,5 @@ public class MainActivity extends AppCompatActivity {
         kcalIntent.putExtra("calories", String.valueOf(product.calories));
 
         startActivity(kcalIntent);
-    }
-
-    /**
-     * Saves a scanned product to the local Room database.
-     *
-     * @param product The product data returned from OpenFoodFacts.
-     */
-    private void saveProductToDatabase(ProductResponse product) {
-        ScannedFood food = new ScannedFood(
-                product.product.product_name,
-                product.product.ingredients_text,
-                product.product.nutriments != null ? product.product.nutriments.energyKcal : 0,
-                System.currentTimeMillis()
-        );
-
-        new Thread(() -> {
-            AppDatabase.getInstance(getApplicationContext())
-                    .scannedFoodDao()
-                    .insert(food);
-        }).start();
-    }
-
-    private void saveCapturedImageText() {
-        if (capturedImage == null) {
-            Toast.makeText(this, "No image captured.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // You can plug in text extraction here using ML Kit if needed
-        File file = new File(getExternalFilesDir(null), "captured_image_info.txt");
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write("Image saved.");  // Placeholder
-            Toast.makeText(this, "Saved to " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            Log.e("SaveFile", "Failed to save file", e);
-            Toast.makeText(this, "Error saving file!", Toast.LENGTH_SHORT).show();
-        }
     }
 }
