@@ -1,49 +1,59 @@
 ﻿# BiteWise – Food Ingredient Scanner
 **By Phuc Nguyen**
 
-A smart Android app that helps users make informed food choices by scanning barcodes or labels, analyzing ingredients, and checking against personalized preferences like allergy keywords and calorie limits.
----
-
 ## Overview
+A feature-rich Android application designed to empower health-conscious users in making informed dietary choices. The app leverages barcode scanning (ML Kit), real-time nutrition analysis via the Nutritionix API, and rule-based NLP to detect allergens and enforce personalized dietary preferences such as calorie thresholds.
+This project showcases full-stack Android development expertise, including RESTful API integration, local persistence with Room Database, cloud synchronization using Firebase Firestore, and modern UI development following Material Design principles. Additionally, it demonstrates proficiency in implementing machine learning-based text recognition and custom natural language processing (NLP) for ingredient parsing and allergen detection — all orchestrated within a robust, scalable Android architecture.
 
-**BiteWise** empowers users to track their food consumption and make healthier decisions by leveraging barcode scanning and ingredient analysis powered by the [Open Food Facts API](https://world.openfoodfacts.org/). The app extracts ingredient information, displays nutritional content, and highlights risky allergens using a customizable detection system.
+## Key Features
 
-Although developed during a busy finals week and job search, this app reflects my passion for building real-world, purposeful projects.
+- **Barcode Scanning with ML Kit + CameraX** – Seamlessly scans product barcodes using Google's ML Kit and CameraX for real-time, high-performance recognition, supporting a wide range of UPC/EAN codes.
 
----
+- **Nutritional and Ingredient Retrieval via Nutritionix API** – Integrates with the Nutritionix API to fetch real-time product data, including calories, macronutrients, and complete ingredient lists from a large branded food database.
 
-## Core Features
+- **Allergen Detection with Rule-Based NLP** - Users can define custom allergen keywords via interactive Chip UI. The app applies keyword-based natural language processing to detect and highlight matching allergens in scanned ingredient lists.
 
-- **Barcode scanning** – Fast, reliable product lookup using ML Kit Barcode Scanning API.
-- **OCR ingredient extraction** – Extract and parse on-package text using ML Kit Text Recognition.
-- **Ingredient analysis & allergy detection** – Automatically checks scanned ingredients against user-defined allergy keywords using rule-based NLP
-- **Calorie limit enforcement** –  Compares product calories with user-set thresholds and warns when limits are exceeded
-- **Open Food Facts API integration** - Fetches real-time product and nutrition info from a global food database.
-- **Scan history with Room DB**:
-  - Stores product name, ingredient list, calories, and scan timestamp.
-  - Displays entries grouped by date using ListView and a custom adapter.
-- **Smart notifications** – Timely alerts when scanned products contain allergens or exceed nutrition targets.
-- **Smart allergen input with live suggestions** – Allows users to select allergens from real-time ingredient suggestions powered by the Open Food Facts API, reducing typos and ensuring consistent detection. In addition to text normalization and keyword matching, users now select allergens from live suggestions powered by the Open Food Facts ingredient database. This ensures accurate, typo-free entries and enhances detection reliability.
-- **Personalized dashboard** *(planned)* – Visual insights with charts and progress tracking.
+- **Personalized Calorie Limit Enforcement** - Allows users to set a daily calorie cap. When a scanned product exceeds the remaining allowance, the app provides a visual warning to support dietary compliance.
 
----
+- **Local + Cloud Scan History Tracking** - Persistently stores scanned product data with timestamps in a local Room Database. History is displayed in a user-friendly, date-grouped format. Optionally synced to Firebase Firestore for multi-device access and cloud backup.
+
+- **Firebase Firestore Integration** - Enables real-time cloud storage of user preferences, scanned product metadata, and historical consumption logs. Facilitates seamless access across devices and future analytics expansion.
 
 
+## Recent Updates:
 
----
+- Switched from Open Food Facts to Nutritionix API.
+- Added calorie check activity with daily summary.
+- Reworked allergen input UI using ChipGroup.
+- Improved Material UI consistency and responsiveness.
 
-## Why Scan Barcodes Instead of Just Reading Labels?
 
-- **Access rich data**: Barcodes unlock detailed product information from Open Food Facts beyond what's printed on packaging.
-- **Faster logging**: Automatically record ingredients and nutrition with a single scan.
-- **Standardized information**: Get reliable, centralized data for better analysis.
-- **Smarter health tracking**:
-    - Analyze trends over time
-    - Detect nutrient imbalances
-    - Personalize dietary goals
-    - Alert users to allergens or additives
+## Why Barcode Scanning Over Manual Label Reading?
+- **Rich, Structured Data Access**
+  Scanning barcodes retrieves standardized nutrition and ingredient data from authoritative databases like Open Food Facts and Nutritionix, going beyond what’s printed on packaging.
 
----
+- **Faster and More Accurate Logging**
+  Enables one-tap entry of nutrition facts and ingredients, eliminating manual errors and speeding up food tracking for users.
+
+- **Consistent, Centralized Information**
+  Barcodes yield unified product data formats, allowing for reliable comparisons and scalable analysis across different brands and categories.
+
+- **Enhanced Health Intelligence**
+  Scanned data supports:
+  Longitudinal diet tracking
+  Allergen and additive detection
+  Personalized dietary feedback
+  Identification of nutrient excesses or deficiencies
+
+
+## Why Nutritionix API?
+
+- Access to 1.9M+ food items, including branded and restaurant products.
+- Supports barcode scanning and natural language nutrition queries.
+- Continuously updated, dietitian-verified database ensures accuracy.
+- Fast, reliable REST API with strong developer support.
+- Ideal for real-time ingredient and calorie tracking in mobile apps.
+
 
 ## Tech Stack
 
@@ -54,20 +64,19 @@ Although developed during a busy finals week and job search, this app reflects m
 | Image Capture & Barcode | CameraX, ML Kit              |
 | OCR                     | ML Kit Text Recognition      |
 | API Communication       | Retrofit                     |
-| Data Source             | Open Food Facts API          |
+| Data Source             | Nutritionix API          |
 | Local Storage           | Room Database                |
+| Cloud Storage           | Firestore                |
 | UI Design               | Material Design Components   |
 
----
 
 ## Target Users
 
-- Health-conscious individuals
-- People with dietary restrictions (e.g., gluten, nuts, dairy)
-- Nutritionists and researchers
-- Anyone seeking a simple, smart food logging tool
+- Health-conscious individuals.
+- People with dietary restrictions (e.g., gluten, nuts, dairy).
+- Nutritionists and researchers.
+- Anyone seeking a simple, smart food logging tool.
 
----
 
 ## How Allergy Detection Works
 
@@ -84,7 +93,6 @@ It will flag:
 - `arachis oil` → **peanut**
 - `milk sugar` → **lactose**
 
---- 
 
 ## Future Improvements
 
@@ -93,41 +101,20 @@ It will flag:
 - Health goal recommendations and alerts
 - Machine Learning enhancements for NLP allergen detection
 
----
-
-## Screenshots
-
-*(Coming Soon)*
-
----
 
 ## Getting Started
 
 To run the app locally:
 
-1. Clone this repository:
-   git clone https://github.com/yourusername/BiteWise.git
-2. Open the project in **Android Studio**.
-3. Connect an Android device or start an emulator.
-4. Click **Run** to build and launch the app.
+- Clone this repository:
+  git clone https://github.com/yourusername/BiteWise.git
+- Open the project in **Android Studio**.
+- Connect an Android device or start an emulator.
+- Click **Run** to build and launch the app.
 
----
-
-## Project Structure
-
-BiteWise/
-├── app/
-│ ├── activities/
-│ ├── models/
-│ ├── adapters/
-│ ├── utils/
-│ └── res/
-├── AndroidManifest.xml
-├── build.gradle
-└── ...
 
 ## Contribution
 
-BiteWise is a solo project developed independently to apply real-world skills in Android development, OCR integration, API communication, and rule-based NLP.  
-While not built for a course or client, it reflects a strong focus on solving practical problems in health and nutrition.  
-Feedback and suggestions are welcome through [issues](#) or pull requests.
+**Bite Wise** is an independently developed solo project that applies real-world skills in Android development, OCR integration, RESTful API communication, and rule-based natural language processing. Though not created for a course or client, it reflects a strong focus on solving practical challenges in health and nutrition through mobile technology. Feedback, feature suggestions, and contributions are welcome via issues or pull requests.
+
+
